@@ -27,9 +27,6 @@ const server = http.createServer((req, res) => {
   switch(urlToRoute) {
     case '/':
       console.log(`--- Begin Case ${urlToRoute} Route ---`);
-      res.writeHead(302, {
-        location: "/about",
-      });
       return res.end();
       console.log(`--- End Case ${urlToRoute} Route ---`);
       break;
