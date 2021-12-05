@@ -38,6 +38,8 @@ const server = http.createServer((req, res) => {
       homepage(req,res);
       console.log(`--- End Case ${urlToRoute} Route ---`)
       break;
+    case '/echo':
+      console.log(`--- Begin Case ${urlToRoute} Route ---`);
     case '/form-submission':
       console.log(`--- Begin Case ${urlToRoute} Route ---`);
       formSubmissionProcess(req, res);
