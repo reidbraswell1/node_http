@@ -9,7 +9,7 @@ import fs from 'fs';
 //import path from 'path';
 import ejs from 'ejs';
 //import { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS } from 'constants';
-const serverPort = 8000;
+const serverPort = 3000;
 
 // Create a local server to receive data from
 const server = http.createServer((req, res) => {
@@ -27,13 +27,12 @@ const server = http.createServer((req, res) => {
   switch(urlToRoute) {
     case '/':
       console.log(`--- Begin Case ${urlToRoute} Route ---`);
-      return res.end();
+      homepage(req, res);
       console.log(`--- End Case ${urlToRoute} Route ---`);
       break;
     case '/about':
       console.log(`--- Begin Case ${urlToRoute} Route ---`);
-      homepage(req,res);
-      console.log(`--- End Case ${urlToRoute} Route ---`)
+      console.log(`--- End Case ${urlToRoute} Route ---`);
       break;
     case '/echo':
       console.log(`--- Begin Case ${urlToRoute} Route ---`);
