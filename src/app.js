@@ -39,24 +39,24 @@ const server = http.createServer((req, res) => {
     case '/form-submission':
       console.log(`--- Begin Case ${urlToRoute} Route ---`);
       formSubmissionProcess(req, res);
-        console.log(`--- End Case ${urlToRoute} Route ---`);
-        break;
-      case '/styles/indexStyle.css':
+      console.log(`--- End Case ${urlToRoute} Route ---`);
+      break;
+    case '/styles/indexStyle.css':
         console.log(`--- Begin Case ${urlToRoute} Route ---`);
         indexStyle(req,res);
         console.log(`--- End Case ${urlToRoute} Route ---`);
         break;
-      case '/styles/responseStyle.css':
+    case '/styles/responseStyle.css':
         console.log(`--- Begin Case ${urlToRoute} Route --`);
         responseStyle(req, res);
         console.log(`--- End Case ${urlToRoute} ---`);
         break;
-      case '/styles/oopsStyle.css':
+    case '/styles/oopsStyle.css':
         console.log(`--- Begin Case ${urlToRoute} ---`);
         oopsStyle(req, res);
         console.log(`--- End Case ${urlToRoute} ---`);
         break;
-      default:
+    default:
         console.log(`--- Begin Case default ${urlToRoute} Route ---`);
         //console.log(querystring.parse(req.url));
         oopsPage(req, res);
@@ -139,7 +139,7 @@ function formSubmissionProcess(req, res) {
       if(params.get("name") === null || params.get("name") === undefined || 
          params.get("favoriteProgrammingLanguage") === null || params.get("favoriteProgrammingLanguage") === undefined) {
         res.writeHead(302, {
-          location: "/about",
+          location: "/",
         });
         return res.end();
       }
@@ -193,13 +193,23 @@ function formSubmissionProcess(req, res) {
 // Render a response page 
 function responsePage(req, res, webPageData) {
   console.log(`--- Begin Function responsePage() ---`);
-  const htmlPage = 'response.ejs';
+  //const htmlPage = 'response.ejs';
 
-  const template = fs.readFileSync(`./views/${htmlPage}`,'utf-8');
-  let renderedTemplate = '';
-  renderedTemplate = ejs.render(template,{ title:"Form Response", name:webPageData.get("name"), favoriteProgrammingLanguage:webPageData.get("favorite-programming-language") });
-  
-  res.write(renderedTemplate);
+  //const template = fs.readFileSync(`./views/${htmlPage}`,'utf-8');
+  //let renderedTemplate = '';
+  //renderedTemplate = ejs.render(template,{ title:"Form Response", name:webPageData.get("name"), favoriteProgrammingLanguage:webPageData.get("favorite-programming-language") });
+  res.writeHead(200, {"Content-Type":"application/json "});
+  console.log(webPageData.get("name"));
+  let responseObject = {};
+  responseObject.name = webPageData.get("name");
+  let languages = webPageData.get("favorite-programming-languages");
+  let hobbies = webPageData.get("favorite-hobbies");
+  let languagesArray = languages.split(",");
+  let hobbiesArray = hobbies.split(",");
+  responseObject["programming-languages"] = languagesArray.map(str => str.trim());
+  responseObject["hobbies"] = hobbiesArray.map(function(str) { return str.trim(); });
+  responseObject["interesting-fact"] = webPageData.get("interesting-fact").trim();
+  res.write(JSON.stringify(responseObject));
   res.end();
   
   console.log(`--- End Function responsePage() ---`);
