@@ -30,13 +30,11 @@ const server = http.createServer((req, res) => {
       homepage(req, res);
       console.log(`--- End Case ${urlToRoute} Route ---`);
       break;
-    case '/about':
+    case '/echo':
       console.log(`--- Begin Case ${urlToRoute} Route ---`);
       console.log(`--- End Case ${urlToRoute} Route ---`);
       break;
-    case '/echo':
-      console.log(`--- Begin Case ${urlToRoute} Route ---`);
-    case '/form-submission':
+    case '/about':
       console.log(`--- Begin Case ${urlToRoute} Route ---`);
       formSubmissionProcess(req, res);
       console.log(`--- End Case ${urlToRoute} Route ---`);
