@@ -13,9 +13,8 @@ const serverPort = 3000;
 
 // Create a local server to receive data from
 export const server = http.createServer((req, res) => {
-  let htmlFile = '';
-  let type = '';
   let urlToRoute = '';
+  let chunks = [];
   if(req.url.indexOf('?') == -1) {
     urlToRoute = req.url;
   }
@@ -24,6 +23,15 @@ export const server = http.createServer((req, res) => {
   }
   let postObject;
   let data = '';
+  req.on('error',(error) => {
+      console.log(error);
+      req.writeHead(400, { "Content-Type":"text/html" });
+      req.write("An Error Occurred on the server");
+  }).on('data', (chunk) => {
+      chunks.push(chunk);
+  }).on('end', () => {
+
+  });
   switch(urlToRoute) {
     case '/':
       console.log(`--- Begin Case ${urlToRoute} Route ---`);
@@ -218,7 +226,7 @@ function oopsPage(req, res, webPageData) {
   const htmlPage = 'oops.ejs';
 
   const template = fs.readFileSync(`./views/${htmlPage}`,'utf-8');
-  const renderedTemplate = ejs.render(template,{ title:"Ivalid URL Page", url:req.url });
+  const renderedTemplate = ejs.render(template,{ heading:"Ivalid URL Page", url:req.url });
 
   res.write(renderedTemplate);
   res.end();
