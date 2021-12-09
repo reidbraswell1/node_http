@@ -15,6 +15,7 @@ const serverPort = 3000;
 export const server = http.createServer((req, res) => {
   let urlToRoute = '';
   let chunks = [];
+  // Get the base url without parameters to route the request
   if(req.url.indexOf('?') == -1) {
     urlToRoute = req.url;
   }
@@ -23,11 +24,18 @@ export const server = http.createServer((req, res) => {
   }
   let postObject;
   let data = '';
+  // Handle Request Error's
   req.on('error',(error) => {
       console.log(error);
       req.writeHead(400, { "Content-Type":"text/html" });
       req.write("An Error Occurred on the server");
-  }).on('data', (chunk) => {
+  });
+  // Handle Response Error's
+  res.on('error', (err) => {
+
+  });
+  // Assemble data from body of request
+  req.on('data', (chunk) => {
       chunks.push(chunk);
   }).on('end', () => {
 
