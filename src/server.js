@@ -32,6 +32,7 @@ export const server = http.createServer((req, res) => {
   });
   // Handle Response Error's
   res.on('error', (err) => {
+    res.writeHead(500, { "Content-Type":"text/html" });
 
   });
   // Assemble data from body of request
@@ -43,7 +44,7 @@ export const server = http.createServer((req, res) => {
   switch(urlToRoute) {
     case '/':
       console.log(`--- Begin Case ${urlToRoute} Route ---`);
-      homepage(req, res);
+      renderHomepage(req, res);
       console.log(`--- End Case ${urlToRoute} Route ---`);
       break;
     case '/echo':
@@ -73,7 +74,7 @@ export const server = http.createServer((req, res) => {
     default:
         console.log(`--- Begin Case default ${urlToRoute} Route ---`);
         //console.log(querystring.parse(req.url));
-        oopsPage(req, res);
+        renderOopsPage(req, res);
         console.log(`--- End Case ${urlToRoute} ---`);
         break;
     }
@@ -84,7 +85,7 @@ export const server = http.createServer((req, res) => {
   console.log(`Server running on port ${server.address().port}`);
 
 // Render homepage
-function homepage(req, res, data) {
+function renderHomepage(req, res, data) {
   console.log(`--- Begin Function homepage() ---`);
   const htmlPage = 'index.ejs';
 
@@ -229,7 +230,7 @@ function responsePage(req, res, webPageData) {
   console.log(`--- End Function responsePage() ---`);
 }
 
-function oopsPage(req, res, webPageData) {
+function renderOopsPage(req, res, webPageData) {
   console.log(`--- Begin Function responsePage() ---`);
   const htmlPage = 'oops.ejs';
 
