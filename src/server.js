@@ -33,7 +33,7 @@ export const server = http.createServer((req, res) => {
   // Handle Response Error's
   res.on('error', (err) => {
     res.writeHead(500, { "Content-Type":"text/html" });
-
+    renderErrorPage(req, res, err);
   });
   // Assemble data from body of request
   req.on('data', (chunk) => {
@@ -241,4 +241,16 @@ function renderOopsPage(req, res, webPageData) {
   res.end();
   
   console.log(`--- End Function responsePage() ---`);
+}
+
+function renderErrorPage(req, res, err) {
+  console.log(`--- Begin Function renderErrorPage() ---`);
+  const htmlPage = 'error.ejs';
+
+  const template = fs.readFileSync(`./views/${htmlPage}`, 'utf-8');
+  const renderedTemplate = ejs.render(template, {});
+
+  res.write(renderedTemplate);
+  res.end;
+  console.log(`--- End Function renderErrorPage() ---`);
 }
