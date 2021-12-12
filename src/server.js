@@ -38,7 +38,10 @@ export const server = http.createServer((req, res) => {
   // Assemble data from body of request
   req.on('data', (chunk) => {
       chunks.push(chunk);
-  }).on('end', () => {
+  });
+  req.on('end', () => {
+    console.log(`Chunks`);
+    console.log(chunks.toString());
 
   });
   switch(urlToRoute) {
@@ -90,7 +93,7 @@ function renderHomepage(req, res, data) {
   const htmlPage = 'index.ejs';
 
   const template = fs.readFileSync(`./views/${htmlPage}`,'utf-8');
-  const renderedTemplate = ejs.render(template,{title:"Homepage"});
+  const renderedTemplate = ejs.render(template,{heading:"Homepage"});
   res.write(renderedTemplate);
   res.end();
 
