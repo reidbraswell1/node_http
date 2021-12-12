@@ -67,7 +67,7 @@ export const server = http.createServer((req, res) => {
           case "GET":
             processGetRequest(req, res);
           case "POST":
-            processPostRequest();
+            processPostRequest(req, res);
         }
         formSubmissionProcess(req, res, Buffer.concat(chunks).toString());
         console.log(`--- End Case ${urlToRoute} Route ---`);
@@ -233,25 +233,42 @@ function formSubmissionProcess(req, res, body) {
 
 function processGetRequest(req, res) {
   console.log(`--- Begin Function processGetRequest()`);
+  // Get all parameters after ?
   let params = new URLSearchParams(req.url.substring(req.url.indexOf("?")));
-  const interator = params.keys();
-  for(let key in interator) {
-    console.log(key);
-  }
+  // Redirect to index page if no parameters
+  if(!params.has("name") ||
+     !params.has("favorite-programming-languages") || 
+     !params.has("favorite-hobbies") ||
+     !params.has("interesting-fact")) {
+      // Redirect to home page
+      res.writeHead(302, {
+        location: "/",
+      });
+      return res.end();
+  } 
   console.log(
     `GET URL Parameters = ${req.url.substring(req.url.indexOf("?"))}`
   );
   console.log(`GET URLSearchParams Parameters = ${params}`);
   console.log(`GET URLSearchParams.name = ${params.get("name")}\n`);
   console.log(
-    `GET URLSearchParams.favorite-programming-language = ${params.get(
-      "favorite-programming-language"
+    `GET URLSearchParams.favorite-programming-languages = ${params.get(
+      "favorite-programming-languages"
     )}\n`
   );
+  res.writeHead(200, { "Content-Type": "application/json " });
+  let responseObject = {
+    name: params.get("name"),
+    languages: params.get("favorite-programming-languages").split(",").map((str) => str.trim()),
+    hobbies: params.get("favorite-hobbies").split(",").map((str) => str.trim()),
+    "interesting-fact":params.get("interesting-fact").trim()
+  };
+  res.write(JSON.stringify(responseObject));
+  res.end();
   console.log(`--- End Function processGetRequest()`);
 }
 
-function processPostRequest() {
+function processPostRequest(req, res, body) {
 
 }
 
