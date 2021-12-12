@@ -47,8 +47,11 @@
                 </textarea>
             </div>
             <div class="mt-3 mb-3 text-center">
-              <button class="btn btn-primary" name="action" value="about" type="submit">Submit (About)</button>
-              <button class="btn btn-success margin-left-5" name="action"  value="echo" type="submit" formaction="/echo">Submit (Echo)</button>
+              <button class="btn btn-primary" name="action" value="about" type="submit">Submit (About POST)</button>
+              <button class="btn btn-primary margin-left-5" name="action" value="about" type="submit" formmethod="get">Submit (About GET)</button>
+              <br>
+              <button class="btn btn-success margin-top-5" name="action"  value="echo" type="submit" formaction="/echo">Submit (Echo POST)</button>
+              <button class="btn btn-success margin-left-5 margin-top-5" name="action"  value="echo" type="submit" formmethod="GET" formaction="/echo">Submit (Echo GET)</button>
             </div>
           </form>
         </div>
