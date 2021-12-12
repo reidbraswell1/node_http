@@ -4,10 +4,11 @@ console.log("Hello World! server.js \n==========\n");
 console.log("Server Section \n==========\n");
 
 //const http = require("http");
-import http from "http";
+import http, { request } from "http";
 import fs from "fs";
 //import path from 'path';
 import ejs from "ejs";
+import { url } from "inspector";
 //import { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS } from 'constants';
 const serverPort = 3000;
 
@@ -49,13 +50,19 @@ export const server = http.createServer((req, res) => {
         break;
       case "/echo":
         console.log(`--- Begin Case ${urlToRoute} Route ---`);
-        const test = "apple";
-        const responseObject = { 
-          url:req.url,
-          method: req.method,
-          body: Buffer.concat(chunks).toString()
-        };
-        console.log(chunks.toLocaleString());
+        let params;
+        const responseObject = { url:req.url, method:req.method };
+        switch (req.method) {
+          case "GET":
+            params = new URLSearchParams(req.url.substring(req.url.indexOf("?")));
+            responseObject.urlParameters = params.toString();
+            break;
+          case "POST":
+            console.log(chunks.toString());
+            params = new URLSearchParams(`?${chunks.toString()}`);
+            responseObject.body = Buffer.concat(chunks).toString();
+            break;
+        }
         res.writeHead(200, { "Content-Type": "application/json" });
         res.write(JSON.stringify(responseObject));
         res.end();
@@ -67,9 +74,9 @@ export const server = http.createServer((req, res) => {
           case "GET":
             processGetRequest(req, res);
           case "POST":
-            processPostRequest(req, res);
+            processPostRequest(req, res, chunks.toString());
         }
-        formSubmissionProcess(req, res, Buffer.concat(chunks).toString());
+        //formSubmissionProcess(req, res, Buffer.concat(chunks).toString());
         console.log(`--- End Case ${urlToRoute} Route ---`);
         break;
       case "/styles/indexStyle.css":
@@ -245,17 +252,8 @@ function processGetRequest(req, res) {
         location: "/",
       });
       return res.end();
-  } 
-  console.log(
-    `GET URL Parameters = ${req.url.substring(req.url.indexOf("?"))}`
-  );
-  console.log(`GET URLSearchParams Parameters = ${params}`);
-  console.log(`GET URLSearchParams.name = ${params.get("name")}\n`);
-  console.log(
-    `GET URLSearchParams.favorite-programming-languages = ${params.get(
-      "favorite-programming-languages"
-    )}\n`
-  );
+  }
+  console.log(params);
   res.writeHead(200, { "Content-Type": "application/json " });
   let responseObject = {
     name: params.get("name"),
@@ -269,6 +267,31 @@ function processGetRequest(req, res) {
 }
 
 function processPostRequest(req, res, body) {
+  console.log(`--- Begin function processPostRequest() ---`);
+  console.log(`body = ${body}`);
+  const params = new URLSearchParams(`?${body}`);
+  console.log(params);
+  // Redirect to index page if no parameters
+  if(!params.has("name") ||
+     !params.has("favorite-programming-languages") || 
+     !params.has("favorite-hobbies") ||
+     !params.has("interesting-fact")) {
+      // Redirect to home page
+      res.writeHead(302, {
+        location: "/",
+      });
+      return res.end();
+  }
+  res.writeHead(200, { "Content-Type": "application/json " });
+  let responseObject = {
+    name: params.get("name"),
+    languages: params.get("favorite-programming-languages").split(",").map((str) => str.trim()),
+    hobbies: params.get("favorite-hobbies").split(",").map((str) => str.trim()),
+    "interesting-fact":params.get("interesting-fact").trim()
+  };
+  res.write(JSON.stringify(responseObject));
+  res.end();
+  console.log(`--- End function processPostRequest() ---`);
 
 }
 
