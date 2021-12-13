@@ -2,6 +2,10 @@
 TEST_DIR=$HOME/repos/node_http_test;
 DIST_FILE=dist/dist.zip;
 
+# Shell script to extract distribution file into a directory
+# This script will delete the directory if it exists and 
+# extract the distribution file to the directory.
+
 function createTestDirectory() {
     unzip $DIST_FILE -d $TEST_DIR
     if [ $? -eq 0 ]
