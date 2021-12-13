@@ -4,11 +4,10 @@ console.log("Hello World! server.js \n==========\n");
 console.log("Server Section \n==========\n");
 
 //const http = require("http");
-import http, { request } from "http";
+import http from "http";
 import fs from "fs";
 //import path from 'path';
 import ejs from "ejs";
-import { url } from "inspector";
 //import { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS } from 'constants';
 const serverPort = 3000;
 
@@ -25,13 +24,14 @@ export const server = http.createServer((req, res) => {
   let postObject;
   let data = "";
   // Handle Request Error's
-  req.on("error", (error) => {
-    console.log(error);
-    req.writeHead(400, { "Content-Type": "text/html" });
-    req.write("An Error Occurred on the server");
+  req.on("error", (err) => {
+    console.log(`Request Error - ${err}`);
+    res.writeHead(400, { "Content-Type": "text/html" });
+    renderErrorPage(req, res, error);
   });
   // Handle Response Error's
   res.on("error", (err) => {
+    console.log(`Response Error - ${err}`);
     res.writeHead(500, { "Content-Type": "text/html" });
     renderErrorPage(req, res, err);
   });
@@ -76,18 +76,12 @@ export const server = http.createServer((req, res) => {
           case "POST":
             processPostRequest(req, res, chunks.toString());
         }
-        //formSubmissionProcess(req, res, Buffer.concat(chunks).toString());
         console.log(`--- End Case ${urlToRoute} Route ---`);
         break;
       case "/styles/indexStyle.css":
         console.log(`--- Begin Case ${urlToRoute} Route ---`);
         indexStyle(req, res);
         console.log(`--- End Case ${urlToRoute} Route ---`);
-        break;
-      case "/styles/responseStyle.css":
-        console.log(`--- Begin Case ${urlToRoute} Route --`);
-        responseStyle(req, res);
-        console.log(`--- End Case ${urlToRoute} ---`);
         break;
       case "/styles/oopsStyle.css":
         console.log(`--- Begin Case ${urlToRoute} ---`);
@@ -96,7 +90,6 @@ export const server = http.createServer((req, res) => {
         break;
       default:
         console.log(`--- Begin Case default ${urlToRoute} Route ---`);
-        //console.log(querystring.parse(req.url));
         renderOopsPage(req, res);
         console.log(`--- End Case ${urlToRoute} ---`);
         break;
@@ -139,23 +132,6 @@ function indexStyle(req, res) {
   console.log(`--- End Function indexStyle() ---`);
 }
 
-// Serve stylesheet information for response page
-function responseStyle(req, res) {
-  console.log(`--- Begin Function indexStyle() ---`);
-  const styleSheetDirectory = "./styles/";
-  const styleSheet = "responseStyle.css";
-
-  let fileStream = fs.createReadStream(
-    `${styleSheetDirectory}${styleSheet}`,
-    "utf-8"
-  );
-  let css = fs.readFileSync(`${styleSheetDirectory}${styleSheet}`, "utf-8");
-  res.writeHead(200, { "Content-Type": "text/css" });
-  res.write(css);
-  res.end();
-  console.log(`--- End Function indexStyle() ---`);
-}
-
 // Serve stylesheet information for oops invalid url page
 function oopsStyle(req, res) {
   console.log(`--- Begin Function oopsStyle() ---`);
@@ -173,6 +149,7 @@ function oopsStyle(req, res) {
   console.log(`--- End Function oopsStyle() ---`);
 }
 
+// Process a GET request
 function processGetRequest(req, res) {
   console.log(`--- Begin Function processGetRequest()`);
   // Get all parameters after ?
@@ -201,6 +178,7 @@ function processGetRequest(req, res) {
   console.log(`--- End Function processGetRequest()`);
 }
 
+// Process a POST request
 function processPostRequest(req, res, body) {
   console.log(`--- Begin function processPostRequest() ---`);
   console.log(`body = ${body}`);
@@ -230,37 +208,7 @@ function processPostRequest(req, res, body) {
 
 }
 
-// Render a response page
-function responsePage(req, res, webPageData) {
-  console.log(`--- Begin Function responsePage() ---`);
-  //const htmlPage = 'response.ejs';
-
-  //const template = fs.readFileSync(`./views/${htmlPage}`,'utf-8');
-  //let renderedTemplate = '';
-  //renderedTemplate = ejs.render(template,{ title:"Form Response", name:webPageData.get("name"), favoriteProgrammingLanguage:webPageData.get("favorite-programming-language") });
-  res.writeHead(200, { "Content-Type": "application/json " });
-  console.log(webPageData.get("name"));
-  let responseObject = {};
-  responseObject.name = webPageData.get("name");
-  let languages = webPageData.get("favorite-programming-languages");
-  let hobbies = webPageData.get("favorite-hobbies");
-  let languagesArray = languages.split(",");
-  let hobbiesArray = hobbies.split(",");
-  responseObject["programming-languages"] = languagesArray.map((str) =>
-    str.trim()
-  );
-  responseObject["hobbies"] = hobbiesArray.map(function (str) {
-    return str.trim();
-  });
-  responseObject["interesting-fact"] = webPageData
-    .get("interesting-fact")
-    .trim();
-  res.write(JSON.stringify(responseObject));
-  res.end();
-
-  console.log(`--- End Function responsePage() ---`);
-}
-
+// Render an invalid url page
 function renderOopsPage(req, res, webPageData) {
   console.log(`--- Begin Function responsePage() ---`);
   const htmlPage = "oops.ejs";
@@ -277,14 +225,15 @@ function renderOopsPage(req, res, webPageData) {
   console.log(`--- End Function responsePage() ---`);
 }
 
+// Render an error page
 function renderErrorPage(req, res, err) {
   console.log(`--- Begin Function renderErrorPage() ---`);
   const htmlPage = "error.ejs";
 
   const template = fs.readFileSync(`./views/${htmlPage}`, "utf-8");
-  const renderedTemplate = ejs.render(template, {});
+  const renderedTemplate = ejs.render(template, { "heading":"Error Page", "error":err });
 
   res.write(renderedTemplate);
-  res.end;
+  res.end();
   console.log(`--- End Function renderErrorPage() ---`);
 }
