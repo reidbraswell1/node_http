@@ -1,0 +1,222 @@
+{
+	"info": {
+		"_postman_id": "d4b743d2-80af-404b-8d35-9cc2d4486856",
+		"name": "node_http",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "node_http_about_get",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "David",
+							"description": "Name",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "favorite-programming-languages",
+							"value": "Python, SQL",
+							"description": "Favorite Programming Languages",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "favorite-hobbies",
+							"value": "Electronics",
+							"description": "Favorite Hobbies",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "interesting-fact",
+							"value": "Like to code!",
+							"description": "Interesting Fact",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3000/about?name=Sam&favorite-programming-languages=Python, C%23, Java&favorite-hobbies=Electronics, Coding&interesting-fact=Love to read!",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"about"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Sam",
+							"description": "Name"
+						},
+						{
+							"key": "favorite-programming-languages",
+							"value": "Python, C%23, Java",
+							"description": "Favorite Programming Languages"
+						},
+						{
+							"key": "favorite-hobbies",
+							"value": "Electronics, Coding",
+							"description": "Favorite Hobbies"
+						},
+						{
+							"key": "interesting-fact",
+							"value": "Love to read!",
+							"description": "Interesting Fact"
+						}
+					]
+				},
+				"description": "node_http GET Test"
+			},
+			"response": []
+		},
+		{
+			"name": "node_http_about_post",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "Ben",
+							"description": "Name",
+							"type": "text"
+						},
+						{
+							"key": "favorite-programming-languages",
+							"value": "SQL, Bash Script",
+							"description": "Favorite Programming Languages",
+							"type": "text"
+						},
+						{
+							"key": "favorite-hobbies",
+							"value": "Coding, Electronics, Computers",
+							"description": "Favorite Hobbies",
+							"type": "text"
+						},
+						{
+							"key": "interesting-fact",
+							"value": "Love Electronics!",
+							"description": "Interesting Fact",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3000/about",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"about"
+					]
+				},
+				"description": "node_http post"
+			},
+			"response": []
+		},
+		{
+			"name": "node_http_echo_get",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/echo?name=Mike&favorite-programming-languages=C%23, JavaScript&favorite-hobbies=Electronics&interesting-fact=Like to Code!",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"echo"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Mike",
+							"description": "Name"
+						},
+						{
+							"key": "favorite-programming-languages",
+							"value": "C#, JavaScript",
+							"description": "Favorite Programming Languages"
+						},
+						{
+							"key": "favorite-hobbies",
+							"value": "Electronics",
+							"description": "Favorite Hobbies"
+						},
+						{
+							"key": "interesting-fact",
+							"value": "Like to Code!",
+							"description": "Interesting Fact"
+						}
+					]
+				},
+				"description": "node http echo get"
+			},
+			"response": []
+		},
+		{
+			"name": "node_http_echo_post",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "Whit",
+							"description": "Name",
+							"type": "text"
+						},
+						{
+							"key": "favorite-programming-languages",
+							"value": "SQL, Bash Scripting",
+							"description": "Favorite Programming Languages",
+							"type": "text"
+						},
+						{
+							"key": "favorite-hobbies",
+							"value": "Electronics, Coding",
+							"description": "Favorite Hobbies",
+							"type": "text"
+						},
+						{
+							"key": "interesting-fact",
+							"value": "Love Electronics",
+							"description": "Interesting Fact",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3000/echo",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"echo"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
