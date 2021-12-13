@@ -65,7 +65,6 @@ export const server = http.createServer((req, res) => {
         }
         res.writeHead(200, { "Content-Type": "application/json" });
         res.write(JSON.stringify(responseObject));
-        res.end();
         console.log(`--- End Case ${urlToRoute} Route ---`);
         break;
       case "/about":
@@ -73,8 +72,10 @@ export const server = http.createServer((req, res) => {
         switch(req.method) {
           case "GET":
             processGetRequest(req, res);
+            break;
           case "POST":
             processPostRequest(req, res, chunks.toString());
+            break;
         }
         console.log(`--- End Case ${urlToRoute} Route ---`);
         break;
@@ -94,6 +95,7 @@ export const server = http.createServer((req, res) => {
         console.log(`--- End Case ${urlToRoute} ---`);
         break;
     }
+    res.end();
   });
 });
 server.listen(serverPort, function (err) {
@@ -114,8 +116,6 @@ function renderHomepage(req, res, data) {
   const template = fs.readFileSync(`./views/${htmlPage}`, "utf-8");
   const renderedTemplate = ejs.render(template, { heading: "Homepage" });
   res.write(renderedTemplate);
-  res.end();
-
   console.log(`--- End Function homepage() ---`);
 }
 
@@ -128,7 +128,6 @@ function indexStyle(req, res) {
   let css = fs.readFileSync(`./styles/${styleSheet}`, "utf-8");
   res.writeHead(200, { "Content-Type": "text/css" });
   res.write(css);
-  res.end();
   console.log(`--- End Function indexStyle() ---`);
 }
 
@@ -145,7 +144,6 @@ function oopsStyle(req, res) {
   let css = fs.readFileSync(`${styleSheetDirectory}${styleSheet}`, "utf-8");
   res.writeHead(200, { "Content-Type": "text/css" });
   res.write(css);
-  res.end();
   console.log(`--- End Function oopsStyle() ---`);
 }
 
@@ -163,7 +161,7 @@ function processGetRequest(req, res) {
       res.writeHead(302, {
         location: "/",
       });
-      return res.end();
+      return;
   }
   console.log(params);
   res.writeHead(200, { "Content-Type": "application/json " });
@@ -174,7 +172,6 @@ function processGetRequest(req, res) {
     "interesting-fact":params.get("interesting-fact").trim()
   };
   res.write(JSON.stringify(responseObject));
-  res.end();
   console.log(`--- End Function processGetRequest()`);
 }
 
@@ -193,7 +190,7 @@ function processPostRequest(req, res, body) {
       res.writeHead(302, {
         location: "/",
       });
-      return res.end();
+      return;
   }
   res.writeHead(200, { "Content-Type": "application/json " });
   let responseObject = {
@@ -203,7 +200,6 @@ function processPostRequest(req, res, body) {
     "interesting-fact":params.get("interesting-fact").trim()
   };
   res.write(JSON.stringify(responseObject));
-  res.end();
   console.log(`--- End function processPostRequest() ---`);
 
 }
@@ -218,10 +214,8 @@ function renderOopsPage(req, res, webPageData) {
     heading: "Ivalid URL Page",
     url: req.url,
   });
-
+  res.writeHead(404, { "Content-Type": "text/html" });
   res.write(renderedTemplate);
-  res.end();
-
   console.log(`--- End Function responsePage() ---`);
 }
 
@@ -233,7 +227,7 @@ function renderErrorPage(req, res, err) {
   const template = fs.readFileSync(`./views/${htmlPage}`, "utf-8");
   const renderedTemplate = ejs.render(template, { "heading":"Error Page", "error":err });
 
+  res.writeHead(505, { "Content-Type":"text/html" });
   res.write(renderedTemplate);
-  res.end();
   console.log(`--- End Function renderErrorPage() ---`);
 }
