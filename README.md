@@ -11,6 +11,41 @@
 
 ## Exercise
 
+In this exercise additional features have been added to provide for easier testing.
+An HTML form is used when responding the `localhost:3000/` path that prompts the user
+to enter name, favorite programming languages, favorite hobbies and an interesting fact
+about themselves. Four submit buttons are provided to submit a POST or GET for either of 
+the path's `localhost:3000/about` or `localhost:3000/echo`. The reponse will be in
+`appication/json` for both path's. In addition POSTMAN may be used for testing (A JSON file 
+is provided for testing `node_http.postman_collection.json`). At minimum
+the following keys must be used in the body or as parameters in the url string when using 
+postman.
+
+- name
+- favorite-programinng-languages
+- favorite-hobbies
+- interesting-fact
+
+Webpack is being used to make a distributable. To build the project run the following:
+
+- npm install
+- npm run build:dev
+- npm start
+
+If running the ditributable directly run the following:
+
+- npm install
+- npm run build:dev
+- unzip the dist.zip file in the dist directory using the following:
+  - unzip -d `NEW-DIRECTORY`
+  - Navigate to the new directory and run:
+    - npm install
+    - Once complete run (to start server):
+      - node main.js 
+
+
+
+
 ### Objective
 
 - Create a server that responds to requests
