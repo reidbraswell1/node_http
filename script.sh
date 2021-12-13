@@ -2,7 +2,7 @@
 TEST_DIR=$HOME/repos/node_http_test;
 DIST_FILE=dist/dist.zip;
 
-createTestDirectory() {
+function createTestDirectory() {
     unzip $DIST_FILE -d $TEST_DIR
     if [ $? -eq 0 ]
     then 
