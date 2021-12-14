@@ -165,12 +165,18 @@ function processGetRequest(req, res) {
   }
   console.log(params);
   res.writeHead(200, { "Content-Type": "application/json " });
+  let responseObject = { };
+  /*
   let responseObject = {
     name: params.get("name"),
     languages: params.get("favorite-programming-languages").split(",").map((str) => str.trim()),
     hobbies: params.get("favorite-hobbies").split(",").map((str) => str.trim()),
     "interesting-fact":params.get("interesting-fact").trim()
   };
+  */
+  for(let pair of params.entries()) {
+    responseObject[`${pair[0]}`] = pair[1].split(",").map((str) => str.trim());
+  }
   res.write(JSON.stringify(responseObject));
   console.log(`--- End Function processGetRequest()`);
 }
@@ -193,15 +199,20 @@ function processPostRequest(req, res, body) {
       return;
   }
   res.writeHead(200, { "Content-Type": "application/json " });
+  let responseObject = { };
+  /*
   let responseObject = {
     name: params.get("name"),
     languages: params.get("favorite-programming-languages").split(",").map((str) => str.trim()),
     hobbies: params.get("favorite-hobbies").split(",").map((str) => str.trim()),
     "interesting-fact":params.get("interesting-fact").trim()
   };
+  */
+  for(let pair of params.entries()) {
+    responseObject[`${pair[0]}`] = pair[1].split(",").map((str) => str.trim());
+  }
   res.write(JSON.stringify(responseObject));
   console.log(`--- End function processPostRequest() ---`);
-
 }
 
 // Render an invalid url page
