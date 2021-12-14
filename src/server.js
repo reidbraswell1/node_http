@@ -175,7 +175,12 @@ function processGetRequest(req, res) {
   };
   */
   for(let pair of params.entries()) {
-    responseObject[`${pair[0]}`] = pair[1].split(",").map((str) => str.trim());
+    if (pair[1].indexOf(",") < 0) {
+      responseObject[`${pair[0]}`] = pair[1];
+    }
+    else {
+      responseObject[`${pair[0]}`] = pair[1].split(",").map((str) => str.trim());
+    }
   }
   res.write(JSON.stringify(responseObject));
   console.log(`--- End Function processGetRequest()`);
@@ -209,7 +214,12 @@ function processPostRequest(req, res, body) {
   };
   */
   for(let pair of params.entries()) {
-    responseObject[`${pair[0]}`] = pair[1].split(",").map((str) => str.trim());
+    if (pair[1].indexOf(",") < 0) {
+      responseObject[`${pair[0]}`] = pair[1];
+    }
+    else {
+      responseObject[`${pair[0]}`] = pair[1].split(",").map((str) => str.trim());
+    }
   }
   res.write(JSON.stringify(responseObject));
   console.log(`--- End function processPostRequest() ---`);
