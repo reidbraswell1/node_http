@@ -28,19 +28,19 @@ postman.
 
 Webpack is being used to make a distributable. To build the project run the following:
 
-- npm install
-- npm run build:dev
-- npm start
+- `npm install`
+- `npm run build:dev`
+- `npm start`
 
 If running the ditributable directly run the following:
 
-- npm install
+- `npm install`
 - unzip the dist.zip file in the dist directory using the following:
-  - unzip -d `NEW-DIRECTORY`
+  - `unzip -d NEW-DIRECTORY`
   - Navigate to the new directory and run:
-    - npm install
+    - `npm install`
     - Once complete run (to start server):
-      - node main.js 
+      - `node main.js` 
 
 
 
