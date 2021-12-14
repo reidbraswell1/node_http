@@ -11,6 +11,8 @@
 
 ## Exercise
 
+### Additional Features
+
 In this exercise additional features have been added to provide for easier testing.
 An HTML form is used when responding the `localhost:3000/` path that prompts the user
 to enter name, favorite programming languages, favorite hobbies and an interesting fact
