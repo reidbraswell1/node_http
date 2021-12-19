@@ -1,5 +1,5 @@
 {
-  "name": "node_myfirstnode",
+  "name": "node_http",
   "version": "1.0.0",
   "description": "",
   "main": "src/app.js",
